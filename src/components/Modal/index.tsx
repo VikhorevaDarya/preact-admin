@@ -69,11 +69,11 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
             deny_access: isEdit ? account.deny_access : '',
           }}
         >
-          <Form.Item name='login'>
+          <Form.Item name='login' rules={[{ required: true, message: 'Login is required' }]}>
             <Input placeholder='login' />
           </Form.Item>
 
-          <Form.Item name='password'>
+          <Form.Item name='password' rules={[{ required: true, message: 'Password is required' }]}>
             <Input.Password placeholder='Password' iconRender={inputPasswordIconRender} />
           </Form.Item>
 
@@ -97,7 +97,7 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
           </Button>
         </div>
       )}
-      
+
       <span class='modal__form-error'>{error}</span>
     </Modal>
   )

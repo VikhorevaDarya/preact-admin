@@ -1,10 +1,10 @@
 {
   "accounts": [
     {
+      "id": 5,
       "login": "hacker228",
-      "deny_access": "",
       "password": "1qaz2wsx",
-      "id": 5
+      "deny_access": ""
     },
     {
       "login": "admin",
