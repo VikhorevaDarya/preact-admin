@@ -1,0 +1,15 @@
+.filter {
+  display: flex;
+  gap: 1.6rem;
+
+  max-width: 400px;
+  width: 100%;
+
+  &__input {
+    max-width: 322px;
+  }
+
+  &__select {
+    min-width: 90px;
+  }
+}

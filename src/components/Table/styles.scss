@@ -1,0 +1,22 @@
+.table {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+  }
+
+  &__edit {
+    width: 120px;
+  }
+
+  &__add-button {
+    font-size: 1.6rem;
+  }
+
+  &__tooltip-inner-item {
+    margin: 0;
+    padding: 0;
+  }
+}
