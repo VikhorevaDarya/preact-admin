@@ -2,20 +2,20 @@ import { FunctionComponent } from 'preact'
 
 export type AccountType = {
   id: number
-  access: string
+  deny_access: string
   login: string
   password: string
 }
 
 export type TableRowType = {
   id: number
-  access: string
+  deny_access: string
   login: string
   actions: FunctionComponent
 }
 
 export type NewAccountType = {
-  access: string
+  deny_access: string
   login: string
   actions: FunctionComponent
 }

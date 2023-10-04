@@ -4,7 +4,6 @@
     justify-content: space-between;
 
     margin-bottom: 1rem;
-    padding: 0 1rem;
   }
 
   &__edit {
@@ -12,6 +11,10 @@
   }
 
   &__add-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
     font-size: 1.6rem;
   }
 

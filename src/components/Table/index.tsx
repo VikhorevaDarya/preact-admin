@@ -1,3 +1,4 @@
+import { shallow } from 'zustand/shallow'
 import { Table, Button, Tooltip } from 'antd'
 import { useState } from 'preact/hooks'
 
@@ -22,8 +23,8 @@ const columns = [
   },
   {
     title: 'Access',
-    dataIndex: 'access',
-    key: 'access',
+    dataIndex: 'deny_access',
+    key: 'deny_access',
   },
   {
     title: 'Actions',
@@ -34,7 +35,7 @@ const columns = [
 ]
 
 function TableComponent() {
-  const accounts = useAppStore((state) => state.accounts)
+  const [accounts, setError] = useAppStore((state) => [state.accounts, state.setError], shallow)
 
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [selectedAccount, setSelectedAccount] = useState<null | AccountType>(null)
@@ -53,6 +54,7 @@ function TableComponent() {
   const closeModal = () => {
     setIsOpenModal(false)
     setSelectedAccount(null)
+    setError('')
   }
 
   const getSelectedAccount = (accountId: number) => {
@@ -68,16 +70,18 @@ function TableComponent() {
   const dataSource = accounts?.map((item) => {
     return {
       ...item,
-      access: item.access ? (
+      deny_access: item.deny_access ? (
         <Tooltip
           placement='top'
-          title={item.access.split('\n').map((item, index) => (
+          title={item.deny_access.split('\n').map((item, index) => (
             <p class='table__tooltip-inner-item' key={index}>
               {item}
             </p>
           ))}
         >
-          {`${lineCounter(item.access)} ${lineCounter(item.access) > 1 ? 'rules' : 'rule'}`}
+          {`${lineCounter(item.deny_access)} ${
+            lineCounter(item.deny_access) > 1 ? 'rules' : 'rule'
+          }`}
         </Tooltip>
       ) : (
         'ALL'
@@ -97,7 +101,7 @@ function TableComponent() {
       <div class='table__header'>
         <Filter />
         <Button className='table__add-button' type='primary' onClick={handleAddButtonClick}>
-          Add
+          Add User
         </Button>
       </div>
 

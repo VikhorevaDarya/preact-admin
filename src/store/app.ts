@@ -7,12 +7,14 @@ import { http } from '@/utils'
 
 interface AppState {
   accounts: AccountType[]
+  error: string
 
   getAccounts: () => Promise<void | AxiosResponse<any, any>>
   deleteAccount: (id: number) => Promise<void | AxiosResponse<any, any>>
   editAccount: (updatedAccount: AccountType) => Promise<void | AxiosResponse<any, any>>
   createAccount: (newAccount: NewAccountType) => Promise<void | AxiosResponse<any, any>>
   setAccounts: (updatedAccounts: AccountType[]) => void
+  setError: (updatedError: string) => void
 }
 
 export const ROUTES = {
@@ -22,6 +24,7 @@ export const ROUTES = {
 const useAppStore = create<AppState>()(
   devtools((set) => ({
     accounts: null,
+    error: '',
 
     getAccounts: () => {
       return http()
@@ -29,6 +32,7 @@ const useAppStore = create<AppState>()(
         .then((response) => {
           set(() => ({
             accounts: response.data,
+            error: '',
           }))
 
           return response.data
@@ -41,31 +45,60 @@ const useAppStore = create<AppState>()(
         accounts: updatedAccounts,
       })),
 
+    setError: (updatedError: string) =>
+      set(() => ({
+        error: updatedError,
+      })),
+
     deleteAccount: (id: number) => {
       return http()
         .delete(`${ROUTES.accounts}/${id}`)
         .then((response) => {
+          set(() => ({
+            error: '',
+          }))
+          
           return response
         })
-        .catch((error) => console.log(error))
+        .catch((error) =>
+          set(() => ({
+            error: error.message,
+          })),
+        )
     },
 
     editAccount: (updatedAccount: AccountType) => {
       return http()
         .put(`${ROUTES.accounts}/${updatedAccount.id}`, updatedAccount)
         .then((response) => {
+          set(() => ({
+            error: '',
+          }))
+
           return response
         })
-        .catch((error) => console.log(error))
+        .catch((error) =>
+          set(() => ({
+            error: error.message,
+          })),
+        )
     },
 
     createAccount: (newAccount: NewAccountType) => {
       return http()
         .post(ROUTES.accounts, newAccount)
         .then((response) => {
+          set(() => ({
+            error: '',
+          }))
+
           return response
         })
-        .catch((error) => console.log(error))
+        .catch((error) =>
+          set(() => ({
+            error: error.message,
+          })),
+        )
     },
   })),
 )

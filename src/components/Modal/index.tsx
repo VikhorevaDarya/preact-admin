@@ -16,8 +16,14 @@ interface ModalProps {
 }
 
 function ModalWindow({ onClose, account, type }: ModalProps) {
-  const [deleteAccount, getAccounts, editAccount, createAccount] = useAppStore(
-    (state) => [state.deleteAccount, state.getAccounts, state.editAccount, state.createAccount],
+  const [error, deleteAccount, getAccounts, editAccount, createAccount] = useAppStore(
+    (state) => [
+      state.error,
+      state.deleteAccount,
+      state.getAccounts,
+      state.editAccount,
+      state.createAccount,
+    ],
     shallow,
   )
 
@@ -31,10 +37,17 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
 
   const handleSubmit = (values) =>
     isEdit
-      ? editAccount({ id: account.id, ...values }).then(finishSession)
-      : createAccount(values).then(finishSession)
+      ? editAccount({ id: account.id, ...values }).then((res) => {
+          if (res) finishSession()
+        })
+      : createAccount(values).then((res) => {
+          if (res) finishSession()
+        })
 
-  const onDelete = () => deleteAccount(account.id).then(finishSession)
+  const onDelete = () =>
+    deleteAccount(account.id).then((res) => {
+      if (res) finishSession()
+    })
 
   const finishSession = () => {
     getAccounts()
@@ -53,7 +66,7 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
           initialValues={{
             login: isEdit ? account.login : '',
             password: isEdit ? account.password : '',
-            access: isEdit ? account.access : '',
+            deny_access: isEdit ? account.deny_access : '',
           }}
         >
           <Form.Item name='login'>
@@ -64,8 +77,8 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
             <Input.Password placeholder='Password' iconRender={inputPasswordIconRender} />
           </Form.Item>
 
-          <Form.Item name='access'>
-            <TextArea placeholder='Deny Access' />
+          <Form.Item name='deny_access'>
+            <TextArea placeholder='Deny access' />
           </Form.Item>
 
           <Button type='primary' htmlType='submit'>
@@ -75,7 +88,7 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
       ) : (
         <div class='modal__delete-content'>
           <h2 class='modal__delete-title'>
-            Are you really want to delete
+            Do you really want to delete
             <span class='modal__delete-title_bold'> {account?.login}</span>?
           </h2>
 
@@ -84,6 +97,8 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
           </Button>
         </div>
       )}
+      
+      <span class='modal__form-error'>{error}</span>
     </Modal>
   )
 }

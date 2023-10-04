@@ -35,7 +35,7 @@ function Filter() {
           } else if (selectValue === 'access') {
             setAccounts(
               res.filter((item) =>
-                item.access.split('\n').some((subItem) => subItem.startsWith(inputValue)),
+                item.deny_access.split('\n').some((subItem) => subItem.startsWith(inputValue)),
               ),
             )
           }
@@ -43,7 +43,7 @@ function Filter() {
       : getAccounts()
   }
 
-  const onDrop = () => {
+  const onClear = () => {
     setInputValue('')
     getAccounts()
   }
@@ -74,7 +74,7 @@ function Filter() {
         }
       />
 
-      {inputValue && <Button onClick={onDrop}>Drop</Button>}
+      {inputValue && <Button onClick={onClear}>Clear</Button>}
     </div>
   )
 }

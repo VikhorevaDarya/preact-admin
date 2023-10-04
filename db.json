@@ -1,112 +1,94 @@
 {
   "accounts": [
     {
-      "id": 2,
-      "login": "john_doe",
-      "password": "Qwerty123",
-      "access": "first rule\nsecond rul\nsecond rule\nsecond rule\nsecond rule\nsecond rule"
-    },
-    {
-      "login": "supergirl",
-      "access": "",
-      "password": "P@ssw0rd",
-      "id": 3
-    },
-    {
-      "login": "webmaster",
-      "access": "",
-      "password": "LetMeIn2022",
-      "id": 4
-    },
-    {
       "login": "hacker228",
-      "access": "",
+      "deny_access": "",
       "password": "1qaz2wsx",
       "id": 5
     },
     {
       "login": "admin",
-      "access": "",
+      "deny_access": "",
       "password": "Admin@123",
       "id": 6
     },
     {
       "login": "developer",
-      "access": "",
+      "deny_access": "",
       "password": "DevPass2022",
       "id": 7
     },
     {
       "login": "tester",
-      "access": "",
+      "deny_access": "",
       "password": "Test12345",
       "id": 8
     },
     {
       "login": "manager",
-      "access": "",
+      "deny_access": "",
       "password": "ManageMe!",
       "id": 9
     },
     {
       "login": "guest",
-      "access": "",
+      "deny_access": "",
       "password": "Welcome1",
       "id": 10
     },
     {
       "login": "randomUser123",
-      "access": "",
+      "deny_access": "",
       "password": "RandomPass@2022",
       "id": 11
     },
     {
       "login": "mysteriousStranger",
-      "access": "",
+      "deny_access": "",
       "password": "Secret123",
       "id": 12
     },
     {
       "login": "testAccount",
-      "access": "",
+      "deny_access": "",
       "password": "Test1234",
       "id": 13
     },
     {
       "login": "darya228",
       "password": "yellow",
-      "access": "acskd",
+      "deny_access": "acskd",
       "id": 14
     },
     {
       "login": "sanya-loh",
       "password": "2281488",
-      "access": "first rule\nsecond rule",
+      "deny_access": "first rule\nsecond rule",
       "id": 15
     },
     {
       "login": "dashadasha",
       "password": "kfkd",
-      "access": "frfrs",
+      "deny_access": "frfrs",
       "id": 16
     },
     {
       "login": "supergirlkferk",
       "password": "P@ssw0rd",
-      "access": "",
+      "deny_access": "",
       "id": 17
     },
     {
       "login": "test",
       "password": "testp",
-      "access": "first rule\nsecond rule\nthird rule\nfourth rule",
+      "deny_access": "first rule\nsecond rule\nthird rule\nfourth rule",
       "id": 18
     },
     {
       "id": 19,
       "login": "test_login",
       "password": "6767",
-      "access": "first rule\nsecond rule"
+      "deny_access": "first rule\nsecond rule"
     }
   ]
 }
