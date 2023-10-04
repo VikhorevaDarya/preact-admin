@@ -1,5 +1,5 @@
-import { useState } from 'preact/hooks'
-
+import { useState, useEffect } from 'preact/hooks'
+import { shallow } from 'zustand/shallow'
 import { Button, Input, Select } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 
@@ -10,7 +10,10 @@ import './styles.scss'
 const defaultSelectValue = 'login'
 
 function Filter() {
-  const [setAccounts, getAccounts] = useAppStore((state) => [state.setAccounts, state.getAccounts])
+  const [setAccounts, getAccounts] = useAppStore(
+    (state) => [state.setAccounts, state.getAccounts],
+    shallow,
+  )
   const [inputValue, setInputValue] = useState('')
   const [selectValue, setSelectValue] = useState(defaultSelectValue)
 
@@ -27,9 +30,15 @@ function Filter() {
 
     inputValue
       ? getAccounts().then((res) => {
-          const filteredAccounts = res.filter((item) => item[selectValue].startsWith(inputValue))
-
-          setAccounts(filteredAccounts)
+          if (selectValue === 'login') {
+            setAccounts(res.filter((item) => item.login.startsWith(inputValue)))
+          } else if (selectValue === 'access') {
+            setAccounts(
+              res.filter((item) =>
+                item.access.split('\n').some((subItem) => subItem.startsWith(inputValue)),
+              ),
+            )
+          }
         })
       : getAccounts()
   }
@@ -42,6 +51,10 @@ function Filter() {
   const onSelect = (value: string) => {
     setSelectValue(value)
   }
+
+  useEffect(() => {
+    getAccounts()
+  }, [])
 
   return (
     <div class='filter'>

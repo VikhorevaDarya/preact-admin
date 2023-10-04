@@ -1,4 +1,5 @@
 import { useEffect } from 'preact/hooks'
+import { shallow } from 'zustand/shallow'
 import { Input, Modal, Button, Form } from 'antd'
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
 
@@ -15,12 +16,10 @@ interface ModalProps {
 }
 
 function ModalWindow({ onClose, account, type }: ModalProps) {
-  const [deleteAccount, getAccounts, editAccount, createAccount] = useAppStore((state) => [
-    state.deleteAccount,
-    state.getAccounts,
-    state.editAccount,
-    state.createAccount,
-  ])
+  const [deleteAccount, getAccounts, editAccount, createAccount] = useAppStore(
+    (state) => [state.deleteAccount, state.getAccounts, state.editAccount, state.createAccount],
+    shallow,
+  )
 
   const isEdit = type === 'edit'
   const buttonTitle = type?.charAt(0).toUpperCase() + type?.slice(1)

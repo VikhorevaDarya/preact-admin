@@ -72,7 +72,9 @@ function TableComponent() {
         <Tooltip
           placement='top'
           title={item.access.split('\n').map((item, index) => (
-            <p class="table__tooltip-inner-item" key={index}>{item}</p>
+            <p class='table__tooltip-inner-item' key={index}>
+              {item}
+            </p>
           ))}
         >
           {`${lineCounter(item.access)} ${lineCounter(item.access) > 1 ? 'rules' : 'rule'}`}

@@ -4,7 +4,7 @@
       "id": 2,
       "login": "john_doe",
       "password": "Qwerty123",
-      "access": "first rule\nsecond rule\nsecond rule\nsecond rule\nsecond rule\nsecond rule"
+      "access": "first rule\nsecond rul\nsecond rule\nsecond rule\nsecond rule\nsecond rule"
     },
     {
       "login": "supergirl",

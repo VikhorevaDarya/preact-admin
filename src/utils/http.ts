@@ -13,7 +13,7 @@ export interface HTTPOptions extends AxiosRequestConfig {
   statusIgnore?: number[]
 }
 
-export const baseURL = 'http://localhost:3000'
+export const baseURL = import.meta.env.VITE_PREACT_APP_API_URL
 
 const getStatus = (error: AxiosError): number => error.response?.status || 0
 
