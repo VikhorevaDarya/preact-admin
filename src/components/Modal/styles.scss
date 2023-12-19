@@ -1,3 +1,4 @@
+@use 'styles/colors' as clr;
 
 .modal {
   &__form {
@@ -8,7 +9,7 @@
   }
 
   &__form-error {
-    color: red;
+    color: clr.$red-100;
   }
 
   &__delete-title {

@@ -5,6 +5,8 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios'
 
+import { useAuthStore } from '@/store'
+
 type ErrorType = {
   message: string
 }
@@ -13,7 +15,7 @@ export interface HTTPOptions extends AxiosRequestConfig {
   statusIgnore?: number[]
 }
 
-export const baseURL = import.meta.env.VITE_PREACT_APP_API_URL
+export const baseURL = `${import.meta.env.VITE_PREACT_APP_API_URL}/api`
 
 const getStatus = (error: AxiosError): number => error.response?.status || 0
 
@@ -33,6 +35,10 @@ const http = (options: HTTPOptions = { statusIgnore: [] }) => {
   })
 
   const requestHandler = (request: AxiosRequestConfig) => {
+    const { token } = useAuthStore.getState()
+
+    request.headers['Authorization'] = `Bearer ${token}`
+
     return request
   }
 

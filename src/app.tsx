@@ -1,10 +1,8 @@
-import { Table } from './components'
+import { useAuthStore } from '@/store'
+import { Auth, AccountManagement } from './pages'
 
 export function App() {
-  return (
-    <div class='app'>
-      <h1 class='app__title'>Registry Account Management</h1>
-      <Table />
-    </div>
-  )
+  const [token] = useAuthStore((state) => [state.token])
+
+  return <div class='app'>{token ? <AccountManagement /> : <Auth />}</div>
 }

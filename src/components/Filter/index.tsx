@@ -3,17 +3,14 @@ import { shallow } from 'zustand/shallow'
 import { Button, Input, Select } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 
-import { useAppStore } from '@/store'
+import { useUserStore } from '@/store'
 
 import './styles.scss'
 
 const defaultSelectValue = 'login'
 
 function Filter() {
-  const [setAccounts, getAccounts] = useAppStore(
-    (state) => [state.setAccounts, state.getAccounts],
-    shallow,
-  )
+  const [setUsers, getUsers] = useUserStore((state) => [state.setUsers, state.getUsers], shallow)
   const [inputValue, setInputValue] = useState('')
   const [selectValue, setSelectValue] = useState(defaultSelectValue)
 
@@ -29,23 +26,23 @@ function Filter() {
     setInputValue(inputValue)
 
     inputValue
-      ? getAccounts().then((res) => {
+      ? getUsers().then((res) => {
           if (selectValue === 'login') {
-            setAccounts(res.filter((item) => item.login.startsWith(inputValue)))
+            setUsers(res.filter((item) => item.login.startsWith(inputValue)))
           } else if (selectValue === 'access') {
-            setAccounts(
+            setUsers(
               res.filter((item) =>
                 item.deny_access.split('\n').some((subItem) => subItem.startsWith(inputValue)),
               ),
             )
           }
         })
-      : getAccounts()
+      : getUsers()
   }
 
   const onClear = () => {
     setInputValue('')
-    getAccounts()
+    getUsers()
   }
 
   const onSelect = (value: string) => {
@@ -53,7 +50,7 @@ function Filter() {
   }
 
   useEffect(() => {
-    getAccounts()
+    getUsers()
   }, [])
 
   return (

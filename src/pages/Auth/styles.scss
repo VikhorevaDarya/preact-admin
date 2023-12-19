@@ -1,0 +1,41 @@
+@use 'styles/colors' as clr;
+
+.auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 3rem;
+    border-radius: 1rem;
+
+    background-color: clr.$grey-30;
+  }
+
+  &__field {
+    width: 100%;
+    margin-bottom: 1rem;
+
+    .ant-form-item-explain-error {
+      font-size: 1rem;
+      color: clr.$red-100;
+    }
+  }
+
+  &__error {
+    color: clr.$red-100;
+
+    margin-top: 1rem;
+  }
+
+  &__submit {
+    margin-top: 1rem;
+  }
+}

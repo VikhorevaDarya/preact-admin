@@ -3,9 +3,11 @@ import { Table, Button, Tooltip } from 'antd'
 import { useState } from 'preact/hooks'
 
 import { Tools, Filter, Modal } from '@/components'
-import { AccountType, ModalType } from '@/types'
-import { useAppStore } from '@/store'
+import { useUserStore } from '@/store'
 import { lineCounter } from '@/utils'
+
+import { UserType } from '@/store/User/types'
+import { ModalType } from '@/components/Modal/types'
 
 import './styles.scss'
 
@@ -35,10 +37,10 @@ const columns = [
 ]
 
 function TableComponent() {
-  const [accounts, setError] = useAppStore((state) => [state.accounts, state.setError], shallow)
+  const [users, setError] = useUserStore((state) => [state.users, state.setError], shallow)
 
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [selectedAccount, setSelectedAccount] = useState<null | AccountType>(null)
+  const [selectedAccount, setSelectedAccount] = useState<null | UserType>(null)
   const [modalType, setModalType] = useState<ModalType | null>(null)
 
   const handleEdit = () => {
@@ -58,7 +60,7 @@ function TableComponent() {
   }
 
   const getSelectedAccount = (accountId: number) => {
-    setSelectedAccount(accounts.find((item) => item.id === accountId))
+    setSelectedAccount(users.find((item) => item.id === accountId))
   }
 
   const handleAddButtonClick = () => {
@@ -67,7 +69,7 @@ function TableComponent() {
     setSelectedAccount(null)
   }
 
-  const dataSource = accounts?.map((item) => {
+  const dataSource = users?.map((item) => {
     return {
       ...item,
       deny_access: item.deny_access ? (

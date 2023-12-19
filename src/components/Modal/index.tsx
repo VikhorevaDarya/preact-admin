@@ -3,27 +3,22 @@ import { shallow } from 'zustand/shallow'
 import { Input, Modal, Button, Form } from 'antd'
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
 
-import { AccountType, ModalType } from '@/types'
-import { useAppStore } from '@/store'
+import { ModalType } from './types'
+import { UserType } from '@/store/User/types'
+import { useUserStore } from '@/store'
 
 import './styles.scss'
 
 interface ModalProps {
-  account: AccountType | null
+  account: UserType | null
   type: ModalType
 
   onClose: () => void
 }
 
 function ModalWindow({ onClose, account, type }: ModalProps) {
-  const [error, deleteAccount, getAccounts, editAccount, createAccount] = useAppStore(
-    (state) => [
-      state.error,
-      state.deleteAccount,
-      state.getAccounts,
-      state.editAccount,
-      state.createAccount,
-    ],
+  const [error, deleteUser, getUsers, editUser, createUser] = useUserStore(
+    (state) => [state.error, state.deleteUser, state.getUsers, state.editUser, state.createUser],
     shallow,
   )
 
@@ -37,20 +32,20 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
 
   const handleSubmit = (values) =>
     isEdit
-      ? editAccount({ id: account.id, ...values }).then((res) => {
+      ? editUser({ id: account.id, ...values }).then((res) => {
           if (res) finishSession()
         })
-      : createAccount(values).then((res) => {
+      : createUser(values).then((res) => {
           if (res) finishSession()
         })
 
   const onDelete = () =>
-    deleteAccount(account.id).then((res) => {
+    deleteUser(account.id).then((res) => {
       if (res) finishSession()
     })
 
   const finishSession = () => {
-    getAccounts()
+    getUsers()
     onClose()
   }
 

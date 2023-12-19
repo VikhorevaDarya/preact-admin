@@ -6,5 +6,8 @@
     "jsxImportSource": "preact",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }

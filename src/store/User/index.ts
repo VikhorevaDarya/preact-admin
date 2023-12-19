@@ -1,34 +1,22 @@
-import { AxiosResponse } from 'axios'
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
-import { AccountType, NewAccountType } from '@/types'
+import { UserType, NewUserType } from './types'
 import { http } from '@/utils'
-
-interface AppState {
-  accounts: AccountType[]
-  error: string
-
-  getAccounts: () => Promise<void | AxiosResponse<any, any>>
-  deleteAccount: (id: number) => Promise<void | AxiosResponse<any, any>>
-  editAccount: (updatedAccount: AccountType) => Promise<void | AxiosResponse<any, any>>
-  createAccount: (newAccount: NewAccountType) => Promise<void | AxiosResponse<any, any>>
-  setAccounts: (updatedAccounts: AccountType[]) => void
-  setError: (updatedError: string) => void
-}
+import { UserState } from './types'
 
 export const ROUTES = {
-  accounts: '/accounts',
+  users: '/user',
 }
 
-const useAppStore = create<AppState>()(
+const useUserStore = create<UserState>()(
   devtools((set) => ({
-    accounts: null,
+    users: null,
     error: '',
 
-    getAccounts: () => {
+    getUsers: () => {
       return http()
-        .get(ROUTES.accounts)
+        .get(ROUTES.users)
         .then((response) => {
           set(() => ({
             accounts: response.data,
@@ -40,9 +28,9 @@ const useAppStore = create<AppState>()(
         .catch((error) => console.log(error))
     },
 
-    setAccounts: (updatedAccounts: AccountType[]) =>
+    setUsers: (updatedUsers: UserType[]) =>
       set(() => ({
-        accounts: updatedAccounts,
+        users: updatedUsers,
       })),
 
     setError: (updatedError: string) =>
@@ -50,26 +38,9 @@ const useAppStore = create<AppState>()(
         error: updatedError,
       })),
 
-    deleteAccount: (id: number) => {
+    deleteUser: (id: number) => {
       return http()
-        .delete(`${ROUTES.accounts}/${id}`)
-        .then((response) => {
-          set(() => ({
-            error: '',
-          }))
-          
-          return response
-        })
-        .catch((error) =>
-          set(() => ({
-            error: error.message,
-          })),
-        )
-    },
-
-    editAccount: (updatedAccount: AccountType) => {
-      return http()
-        .put(`${ROUTES.accounts}/${updatedAccount.id}`, updatedAccount)
+        .delete(`${ROUTES.users}/${id}`)
         .then((response) => {
           set(() => ({
             error: '',
@@ -84,9 +55,26 @@ const useAppStore = create<AppState>()(
         )
     },
 
-    createAccount: (newAccount: NewAccountType) => {
+    editUser: (updatedUser: UserType) => {
       return http()
-        .post(ROUTES.accounts, newAccount)
+        .put(`${ROUTES.users}/${updatedUser.id}`, updatedUser)
+        .then((response) => {
+          set(() => ({
+            error: '',
+          }))
+
+          return response
+        })
+        .catch((error) =>
+          set(() => ({
+            error: error.message,
+          })),
+        )
+    },
+
+    createUser: (newUser: NewUserType) => {
+      return http()
+        .post(ROUTES.users, newUser)
         .then((response) => {
           set(() => ({
             error: '',
@@ -103,4 +91,4 @@ const useAppStore = create<AppState>()(
   })),
 )
 
-export default useAppStore
+export default useUserStore
