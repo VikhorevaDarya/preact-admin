@@ -19,7 +19,7 @@ const useUserStore = create<UserState>()(
         .get(ROUTES.users)
         .then((response) => {
           set(() => ({
-            accounts: response.data,
+            users: response.data,
             error: '',
           }))
 
@@ -38,9 +38,9 @@ const useUserStore = create<UserState>()(
         error: updatedError,
       })),
 
-    deleteUser: (id: number) => {
+    deleteUser: (login: string) => {
       return http()
-        .delete(`${ROUTES.users}/${id}`)
+        .delete(`${ROUTES.users}/${login}`)
         .then((response) => {
           set(() => ({
             error: '',
@@ -57,7 +57,7 @@ const useUserStore = create<UserState>()(
 
     editUser: (updatedUser: UserType) => {
       return http()
-        .put(`${ROUTES.users}/${updatedUser.id}`, updatedUser)
+        .put(`${ROUTES.users}`, updatedUser)
         .then((response) => {
           set(() => ({
             error: '',

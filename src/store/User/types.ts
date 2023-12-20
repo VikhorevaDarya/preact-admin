@@ -19,7 +19,7 @@ export interface UserState {
   error: string
 
   getUsers: () => Promise<void | AxiosResponse<any, any>>
-  deleteUser: (id: number) => Promise<void | AxiosResponse<any, any>>
+  deleteUser: (login: string) => Promise<void | AxiosResponse<any, any>>
   editUser: (updatedAccount: UserType) => Promise<void | AxiosResponse<any, any>>
   createUser: (newAccount: NewUserType) => Promise<void | AxiosResponse<any, any>>
   setUsers: (updatedAccounts: UserType[]) => void

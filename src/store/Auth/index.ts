@@ -5,6 +5,10 @@ import { http } from '@/utils'
 
 import { AuthState } from './types'
 
+export const ROUTES = {
+  login: '/login',
+}
+
 const useAuthStore = create<AuthState>()(
   devtools(
     persist(
@@ -19,7 +23,7 @@ const useAuthStore = create<AuthState>()(
           }))
 
           return http()
-            .post('/api/login', { login, password })
+            .post(ROUTES.login, { login, password })
             .then((response) =>
               set(() => ({
                 token: response.data.token,

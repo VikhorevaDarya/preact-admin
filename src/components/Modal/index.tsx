@@ -10,13 +10,13 @@ import { useUserStore } from '@/store'
 import './styles.scss'
 
 interface ModalProps {
-  account: UserType | null
+  user: UserType | null
   type: ModalType
 
   onClose: () => void
 }
 
-function ModalWindow({ onClose, account, type }: ModalProps) {
+function ModalWindow({ onClose, user, type }: ModalProps) {
   const [error, deleteUser, getUsers, editUser, createUser] = useUserStore(
     (state) => [state.error, state.deleteUser, state.getUsers, state.editUser, state.createUser],
     shallow,
@@ -32,7 +32,7 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
 
   const handleSubmit = (values) =>
     isEdit
-      ? editUser({ id: account.id, ...values }).then((res) => {
+      ? editUser({ id: user.id, ...values }).then((res) => {
           if (res) finishSession()
         })
       : createUser(values).then((res) => {
@@ -40,7 +40,7 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
         })
 
   const onDelete = () =>
-    deleteUser(account.id).then((res) => {
+    deleteUser(user.login).then((res) => {
       if (res) finishSession()
     })
 
@@ -53,15 +53,15 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
 
   return (
     <Modal open={true} className='modal' onCancel={onClose}>
-      {(isEdit && account) || type === 'create' ? (
+      {(isEdit && user) || type === 'create' ? (
         <Form
           className='modal__form'
           onFinish={handleSubmit}
           form={form}
           initialValues={{
-            login: isEdit ? account.login : '',
-            password: isEdit ? account.password : '',
-            deny_access: isEdit ? account.deny_access : '',
+            login: isEdit ? user.login : '',
+            password: isEdit ? user.password : '',
+            deny_access: isEdit ? user.deny_access : '',
           }}
         >
           <Form.Item name='login' rules={[{ required: true, message: 'Login is required' }]}>
@@ -84,7 +84,7 @@ function ModalWindow({ onClose, account, type }: ModalProps) {
         <div class='modal__delete-content'>
           <h2 class='modal__delete-title'>
             Do you really want to delete
-            <span class='modal__delete-title_bold'> {account?.login}</span>?
+            <span class='modal__delete-title_bold'> {user?.login}</span>?
           </h2>
 
           <Button type='primary' danger onClick={onDelete} htmlType='submit'>

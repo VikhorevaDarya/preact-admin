@@ -40,7 +40,7 @@ function TableComponent() {
   const [users, setError] = useUserStore((state) => [state.users, state.setError], shallow)
 
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [selectedAccount, setSelectedAccount] = useState<null | UserType>(null)
+  const [selectedUser, setSelectedUser] = useState<null | UserType>(null)
   const [modalType, setModalType] = useState<ModalType | null>(null)
 
   const handleEdit = () => {
@@ -55,18 +55,18 @@ function TableComponent() {
 
   const closeModal = () => {
     setIsOpenModal(false)
-    setSelectedAccount(null)
+    setSelectedUser(null)
     setError('')
   }
 
-  const getSelectedAccount = (accountId: number) => {
-    setSelectedAccount(users.find((item) => item.id === accountId))
+  const getSelectedUser = (userId: number) => {
+    setSelectedUser(users.find((item) => item.id === userId))
   }
 
   const handleAddButtonClick = () => {
     setModalType(modalTypes.create as ModalType)
     setIsOpenModal(true)
-    setSelectedAccount(null)
+    setSelectedUser(null)
   }
 
   const dataSource = users?.map((item) => {
@@ -111,12 +111,12 @@ function TableComponent() {
         {...tableProps}
         onRow={(record) => {
           return {
-            onClick: () => getSelectedAccount(record.id),
+            onClick: () => getSelectedUser(record.id),
           }
         }}
       />
 
-      {isOpenModal && <Modal onClose={closeModal} account={selectedAccount} type={modalType} />}
+      {isOpenModal && <Modal onClose={closeModal} user={selectedUser} type={modalType} />}
     </div>
   )
 }
