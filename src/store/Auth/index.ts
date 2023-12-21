@@ -37,7 +37,12 @@ const useAuthStore = create<AuthState>()(
               })),
             )
         },
+        setToken: (updatedToken) =>
+          set(() => ({
+            token: updatedToken,
+          })),
       }),
+
       {
         name: 'auth',
         partialize: (state) => ({

@@ -2,7 +2,7 @@ import { FunctionComponent } from 'preact'
 
 export type TableRowType = {
   id: number
-  deny_access: string
+  rules: string
   login: string
   actions: FunctionComponent
 }

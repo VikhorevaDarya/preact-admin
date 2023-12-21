@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { shallow } from 'zustand/shallow'
 import { Button, Input, Select } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
@@ -32,7 +32,7 @@ function Filter() {
           } else if (selectValue === 'access') {
             setUsers(
               res.filter((item) =>
-                item.deny_access.split('\n').some((subItem) => subItem.startsWith(inputValue)),
+                item.rules.split('\n').some((subItem) => subItem.startsWith(inputValue)),
               ),
             )
           }
@@ -48,10 +48,6 @@ function Filter() {
   const onSelect = (value: string) => {
     setSelectValue(value)
   }
-
-  useEffect(() => {
-    getUsers()
-  }, [])
 
   return (
     <div class='filter'>

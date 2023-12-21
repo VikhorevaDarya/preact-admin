@@ -1,5 +1,6 @@
 import { shallow } from 'zustand/shallow'
-import { Table, Button, Tooltip } from 'antd'
+import { Table, Button, Tooltip, Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
 import { useState } from 'preact/hooks'
 
 import { Tools, Filter, Modal } from '@/components'
@@ -25,8 +26,8 @@ const columns = [
   },
   {
     title: 'Access',
-    dataIndex: 'deny_access',
-    key: 'deny_access',
+    dataIndex: 'rules',
+    key: 'rules',
   },
   {
     title: 'Actions',
@@ -37,7 +38,10 @@ const columns = [
 ]
 
 function TableComponent() {
-  const [users, setError] = useUserStore((state) => [state.users, state.setError], shallow)
+  const [users, setError, error, isLoadingUsers] = useUserStore(
+    (state) => [state.users, state.setError, state.error, state.isLoadingUsers],
+    shallow,
+  )
 
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [selectedUser, setSelectedUser] = useState<null | UserType>(null)
@@ -59,8 +63,8 @@ function TableComponent() {
     setError('')
   }
 
-  const getSelectedUser = (userId: number) => {
-    setSelectedUser(users.find((item) => item.id === userId))
+  const getSelectedUser = (login: string) => {
+    setSelectedUser(users.find((item) => item.login === login))
   }
 
   const handleAddButtonClick = () => {
@@ -72,18 +76,16 @@ function TableComponent() {
   const dataSource = users?.map((item) => {
     return {
       ...item,
-      deny_access: item.deny_access ? (
+      rules: item.rules ? (
         <Tooltip
           placement='top'
-          title={item.deny_access.split('\n').map((item, index) => (
+          title={item.rules.map((item, index) => (
             <p class='table__tooltip-inner-item' key={index}>
               {item}
             </p>
           ))}
         >
-          {`${lineCounter(item.deny_access)} ${
-            lineCounter(item.deny_access) > 1 ? 'rules' : 'rule'
-          }`}
+          {`${item.rules.length} ${item.rules.length > 1 ? 'rules' : 'rule'}`}
         </Tooltip>
       ) : (
         'ALL'
@@ -107,14 +109,25 @@ function TableComponent() {
         </Button>
       </div>
 
-      <Table
-        {...tableProps}
-        onRow={(record) => {
-          return {
-            onClick: () => getSelectedUser(record.id),
-          }
-        }}
-      />
+      {users && (
+        <Table
+          {...tableProps}
+          onRow={(record) => {
+            return {
+              onClick: () => getSelectedUser(record.login),
+            }
+          }}
+        />
+      )}
+
+      {isLoadingUsers && (
+        <Spin
+          className='table__loader'
+          indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />}
+        />
+      )}
+
+      {error && <span class='table__error'>{error}</span>}
 
       {isOpenModal && <Modal onClose={closeModal} user={selectedUser} type={modalType} />}
     </div>

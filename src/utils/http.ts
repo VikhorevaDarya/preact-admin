@@ -37,7 +37,9 @@ const http = (options: HTTPOptions = { statusIgnore: [] }) => {
   const requestHandler = (request: AxiosRequestConfig) => {
     const { token } = useAuthStore.getState()
 
-    request.headers['Authorization'] = `Bearer ${token}`
+    if (token) {
+      request.headers['Authorization'] = `Bearer ${token}`
+    }
 
     return request
   }
@@ -47,11 +49,16 @@ const http = (options: HTTPOptions = { statusIgnore: [] }) => {
   }
 
   const errorHandler = (error: AxiosError<ErrorType>) => {
+    const { setToken } = useAuthStore.getState()
     const status = getStatus(error)
     const backendErrorMessage = getBackendErrorMessage(error)
     const errorMessage = backendErrorMessage || error.message
 
     let message: string | undefined = errorMessage
+
+    if (status === 403) {
+      setToken(null)
+    }
 
     if (statusIgnore?.includes(status)) {
       message = undefined

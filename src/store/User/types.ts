@@ -3,13 +3,13 @@ import { AxiosResponse } from 'axios'
 
 export type UserType = {
   id: number
-  deny_access: string
+  rules: string[]
   login: string
   password: string
 }
 
 export type NewUserType = {
-  deny_access: string
+  rules: string
   login: string
   actions: FunctionComponent
 }
@@ -17,11 +17,13 @@ export type NewUserType = {
 export interface UserState {
   users: UserType[]
   error: string
+  isLoadingUsers: boolean
+  isLoadingUpdateUser: boolean
 
   getUsers: () => Promise<void | AxiosResponse<any, any>>
   deleteUser: (login: string) => Promise<void | AxiosResponse<any, any>>
-  editUser: (updatedAccount: UserType) => Promise<void | AxiosResponse<any, any>>
-  createUser: (newAccount: NewUserType) => Promise<void | AxiosResponse<any, any>>
-  setUsers: (updatedAccounts: UserType[]) => void
+  editUser: (updatedUser: UserType) => Promise<void | AxiosResponse<any, any>>
+  createUser: (newUser: NewUserType) => Promise<void | AxiosResponse<any, any>>
+  setUsers: (updatedUsers: UserType[]) => void
   setError: (updatedError: string) => void
 }

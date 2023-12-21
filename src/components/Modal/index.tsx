@@ -1,7 +1,7 @@
 import { useEffect } from 'preact/hooks'
 import { shallow } from 'zustand/shallow'
-import { Input, Modal, Button, Form } from 'antd'
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
+import { Input, Modal, Button, Form, Spin } from 'antd'
+import { EyeInvisibleOutlined, EyeTwoTone, LoadingOutlined } from '@ant-design/icons'
 
 import { ModalType } from './types'
 import { UserType } from '@/store/User/types'
@@ -17,27 +17,37 @@ interface ModalProps {
 }
 
 function ModalWindow({ onClose, user, type }: ModalProps) {
-  const [error, deleteUser, getUsers, editUser, createUser] = useUserStore(
-    (state) => [state.error, state.deleteUser, state.getUsers, state.editUser, state.createUser],
+  const [error, deleteUser, getUsers, editUser, createUser, isLoadingUpdateUser] = useUserStore(
+    (state) => [
+      state.error,
+      state.deleteUser,
+      state.getUsers,
+      state.editUser,
+      state.createUser,
+      state.isLoadingUpdateUser,
+    ],
     shallow,
   )
 
   const isEdit = type === 'edit'
   const buttonTitle = type?.charAt(0).toUpperCase() + type?.slice(1)
 
+  const initialValues = {
+    login: isEdit ? user.login : '',
+    password: isEdit ? user.password : '',
+    rules: isEdit ? user.rules.join('\n') : '',
+  }
+
   const { TextArea } = Input
   const [form] = Form.useForm()
 
   const inputPasswordIconRender = (visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)
+  const submitMethod = isEdit ? editUser : createUser
 
   const handleSubmit = (values) =>
-    isEdit
-      ? editUser({ id: user.id, ...values }).then((res) => {
-          if (res) finishSession()
-        })
-      : createUser(values).then((res) => {
-          if (res) finishSession()
-        })
+    submitMethod(values).then((res) => {
+      if (res) finishSession()
+    })
 
   const onDelete = () =>
     deleteUser(user.login).then((res) => {
@@ -58,11 +68,7 @@ function ModalWindow({ onClose, user, type }: ModalProps) {
           className='modal__form'
           onFinish={handleSubmit}
           form={form}
-          initialValues={{
-            login: isEdit ? user.login : '',
-            password: isEdit ? user.password : '',
-            deny_access: isEdit ? user.deny_access : '',
-          }}
+          initialValues={initialValues}
         >
           <Form.Item name='login' rules={[{ required: true, message: 'Login is required' }]}>
             <Input placeholder='login' />
@@ -72,12 +78,19 @@ function ModalWindow({ onClose, user, type }: ModalProps) {
             <Input.Password placeholder='Password' iconRender={inputPasswordIconRender} />
           </Form.Item>
 
-          <Form.Item name='deny_access'>
+          <Form.Item name='rules'>
             <TextArea placeholder='Deny access' />
           </Form.Item>
 
-          <Button type='primary' htmlType='submit'>
-            {buttonTitle}
+          <Button type='primary' htmlType='submit' disabled={isLoadingUpdateUser}>
+            {isLoadingUpdateUser ? (
+              <Spin
+                className='modal__loader'
+                indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
+              />
+            ) : (
+              buttonTitle
+            )}
           </Button>
         </Form>
       ) : (
@@ -87,8 +100,21 @@ function ModalWindow({ onClose, user, type }: ModalProps) {
             <span class='modal__delete-title_bold'> {user?.login}</span>?
           </h2>
 
-          <Button type='primary' danger onClick={onDelete} htmlType='submit'>
-            Delete
+          <Button
+            type='primary'
+            danger
+            onClick={onDelete}
+            htmlType='submit'
+            disabled={isLoadingUpdateUser}
+          >
+            {isLoadingUpdateUser ? (
+              <Spin
+                className='modal__loader'
+                indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
+              />
+            ) : (
+              'Delete'
+            )}
           </Button>
         </div>
       )}

@@ -1,9 +1,28 @@
+@use 'styles/colors' as clr;
+
 .table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+
+  &__loader {
+    margin-top: 2rem;
+  }
+
   &__header {
     display: flex;
     justify-content: space-between;
 
+    width: 100%;
+
     margin-bottom: 1rem;
+  }
+
+  &__error {
+    color: clr.$red-100;
+    margin-top: 2rem;
   }
 
   &__edit {
@@ -14,7 +33,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     font-size: 1.6rem;
   }
 

@@ -4,4 +4,5 @@ export interface AuthState {
   isLoading: boolean
 
   login: (login: string, password: string) => void
+  setToken: (updatedToken: string | null) => void
 }
