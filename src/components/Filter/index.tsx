@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useCallback, useState } from 'preact/hooks'
 import { shallow } from 'zustand/shallow'
 import { Button, Input, Select } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
@@ -7,39 +7,49 @@ import { useUserStore } from '@/store'
 
 import './styles.scss'
 
-const defaultSelectValue = 'login'
-
 function Filter() {
   const [setUsers, getUsers] = useUserStore((state) => [state.setUsers, state.getUsers], shallow)
   const [inputValue, setInputValue] = useState('')
-  const [selectValue, setSelectValue] = useState(defaultSelectValue)
+  const [selectValue, setSelectValue] = useState('login')
 
   const options = [
     { value: 'login', label: 'login' },
     { value: 'access', label: 'access' },
   ]
 
-  const onInput = (event: InputEvent) => {
-    const input = event.target as HTMLInputElement
-    const inputValue = input.value
+  const onInput = useCallback(
+    (event: InputEvent) => {
+      const input = event.target as HTMLInputElement
 
-    setInputValue(inputValue)
+      setInputValue(input.value)
 
-    inputValue
-      ? getUsers().then((users) => {
-          if (selectValue === 'login') {
-            setUsers(users.filter((item) => item.login.startsWith(inputValue)))
-          } else if (selectValue === 'access') {
-            setUsers(
-              users.filter((item) =>
-                item.rules.some((subItem) =>
-                  subItem.toLowerCase().startsWith(inputValue.toLowerCase()),
-                ),
-              ),
-            )
-          }
-        })
-      : getUsers()
+      if (input.value) {
+        if (selectValue === 'login') {
+          filterByLogin(input.value)
+        } else if (selectValue === 'access') {
+          filterByAccess(input.value)
+        }
+      } else {
+        getUsers()
+      }
+    },
+    [selectValue],
+  )
+
+  const filterByLogin = (value: string) => {
+    getUsers().then((users) => {
+      setUsers(users.filter((item) => item.login.startsWith(value)))
+    })
+  }
+
+  const filterByAccess = (value: string) => {
+    getUsers().then((users) => {
+      setUsers(
+        users.filter((item) =>
+          item.rules.some((subItem) => subItem.toLowerCase().startsWith(value.toLowerCase())),
+        ),
+      )
+    })
   }
 
   const onClear = () => {
@@ -49,6 +59,16 @@ function Filter() {
 
   const onSelect = (value: string) => {
     setSelectValue(value)
+
+    if (inputValue) {
+      if (value === 'login') {
+        filterByLogin(inputValue)
+      }
+
+      if (value === 'access') {
+        filterByAccess(inputValue)
+      }
+    }
   }
 
   return (
@@ -61,7 +81,7 @@ function Filter() {
         className='filter__input'
         addonAfter={
           <Select
-            defaultValue={defaultSelectValue}
+            defaultValue={selectValue}
             onChange={onSelect}
             className='filter__select'
             options={options}

@@ -11,6 +11,11 @@ export const ROUTES = {
   users: '/user',
 }
 
+const notificationOptions = {
+  duration: 3,
+  className: 'notification',
+}
+
 const useUserStore = create<UserState>()(
   devtools((set) => ({
     users: null,
@@ -73,10 +78,9 @@ const useUserStore = create<UserState>()(
           }))
 
           notification.open({
+            ...notificationOptions,
             type: 'success',
             message: `${login} successfully deleted`,
-            duration: 3,
-            className: 'notification',
           })
 
           return response
@@ -106,10 +110,9 @@ const useUserStore = create<UserState>()(
           }))
 
           notification.open({
+            ...notificationOptions,
             type: 'success',
             message: `${updatedUser.login} edited successfully`,
-            duration: 3,
-            className: 'notification',
           })
 
           return response
@@ -130,7 +133,7 @@ const useUserStore = create<UserState>()(
       return http()
         .post(ROUTES.users, {
           ...newUser,
-          rules: newUser.rules.split('\n'),
+          rules: newUser.rules.trim().split('\n'),
         })
         .then((response) => {
           set(() => ({
@@ -139,10 +142,9 @@ const useUserStore = create<UserState>()(
           }))
 
           notification.open({
+            ...notificationOptions,
             type: 'success',
             message: `${newUser.login} created successfully`,
-            duration: 3,
-            className: 'notification',
           })
 
           return response
