@@ -26,13 +26,15 @@ function Filter() {
     setInputValue(inputValue)
 
     inputValue
-      ? getUsers().then((res) => {
+      ? getUsers().then((users) => {
           if (selectValue === 'login') {
-            setUsers(res.filter((item) => item.login.startsWith(inputValue)))
+            setUsers(users.filter((item) => item.login.startsWith(inputValue)))
           } else if (selectValue === 'access') {
             setUsers(
-              res.filter((item) =>
-                item.rules.split('\n').some((subItem) => subItem.startsWith(inputValue)),
+              users.filter((item) =>
+                item.rules.some((subItem) =>
+                  subItem.toLowerCase().startsWith(inputValue.toLowerCase()),
+                ),
               ),
             )
           }

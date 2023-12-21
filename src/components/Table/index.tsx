@@ -1,21 +1,18 @@
 import { shallow } from 'zustand/shallow'
-import { Table, Button, Tooltip, Spin } from 'antd'
+import { Table, Tooltip, Spin } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
-import { useState } from 'preact/hooks'
 
-import { Tools, Filter, Modal } from '@/components'
+import { Tools } from '@/components'
 import { useUserStore } from '@/store'
-import { lineCounter } from '@/utils'
 
 import { UserType } from '@/store/User/types'
-import { ModalType } from '@/components/Modal/types'
 
 import './styles.scss'
 
-const modalTypes = {
-  create: 'create',
-  edit: 'edit',
-  delete: 'delete',
+interface Props {
+  setSelectedUser: (updatedUser: UserType) => void
+  handleDelete: () => void
+  handleEdit: () => void
 }
 
 const columns = [
@@ -37,46 +34,20 @@ const columns = [
   },
 ]
 
-function TableComponent() {
-  const [users, setError, error, isLoadingUsers] = useUserStore(
-    (state) => [state.users, state.setError, state.error, state.isLoadingUsers],
+function TableComponent({ setSelectedUser, handleDelete, handleEdit }: Props) {
+  const [users, isLoadingUsers, tableError] = useUserStore(
+    (state) => [state.users, state.isLoadingUsers, state.tableError],
     shallow,
   )
-
-  const [isOpenModal, setIsOpenModal] = useState(false)
-  const [selectedUser, setSelectedUser] = useState<null | UserType>(null)
-  const [modalType, setModalType] = useState<ModalType | null>(null)
-
-  const handleEdit = () => {
-    setIsOpenModal(true)
-    setModalType(modalTypes.edit as ModalType)
-  }
-
-  const handleDelete = () => {
-    setModalType(modalTypes.delete as ModalType)
-    setIsOpenModal(true)
-  }
-
-  const closeModal = () => {
-    setIsOpenModal(false)
-    setSelectedUser(null)
-    setError('')
-  }
 
   const getSelectedUser = (login: string) => {
     setSelectedUser(users.find((item) => item.login === login))
   }
 
-  const handleAddButtonClick = () => {
-    setModalType(modalTypes.create as ModalType)
-    setIsOpenModal(true)
-    setSelectedUser(null)
-  }
-
   const dataSource = users?.map((item) => {
     return {
       ...item,
-      rules: item.rules ? (
+      rules: item.rules[0] ? (
         <Tooltip
           placement='top'
           title={item.rules.map((item, index) => (
@@ -102,13 +73,6 @@ function TableComponent() {
 
   return (
     <div class='table'>
-      <div class='table__header'>
-        <Filter />
-        <Button className='table__add-button' type='primary' onClick={handleAddButtonClick}>
-          Add User
-        </Button>
-      </div>
-
       {users && (
         <Table
           {...tableProps}
@@ -127,9 +91,7 @@ function TableComponent() {
         />
       )}
 
-      {error && <span class='table__error'>{error}</span>}
-
-      {isOpenModal && <Modal onClose={closeModal} user={selectedUser} type={modalType} />}
+      {tableError && <span class='table__error'>{tableError}</span>}
     </div>
   )
 }

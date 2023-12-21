@@ -25,7 +25,7 @@ const AuthPage = () => {
           rules={[{ required: true, message: 'Login is required' }]}
           className='auth__field'
         >
-          <Input placeholder='login' />
+          <Input placeholder='login' size='large' />
         </Form.Item>
 
         <Form.Item
@@ -33,7 +33,11 @@ const AuthPage = () => {
           rules={[{ required: true, message: 'Password is required' }]}
           className='auth__field'
         >
-          <Input.Password placeholder='Password' iconRender={inputPasswordIconRender} />
+          <Input.Password
+            placeholder='Password'
+            iconRender={inputPasswordIconRender}
+            size='large'
+          />
         </Form.Item>
 
         {error && <span class='auth__error'>{error}</span>}

@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
+import { notification } from 'antd'
+
 import { UserType, NewUserType } from './types'
 import { http } from '@/utils'
 import { UserState } from './types'
@@ -12,7 +14,8 @@ export const ROUTES = {
 const useUserStore = create<UserState>()(
   devtools((set) => ({
     users: null,
-    error: '',
+    modalError: '',
+    tableError: '',
     isLoadingUsers: false,
     isLoadingUpdateUser: false,
 
@@ -27,7 +30,7 @@ const useUserStore = create<UserState>()(
         .then((response) => {
           set(() => ({
             users: response.data,
-            error: '',
+            tableError: '',
             isLoadingUsers: false,
           }))
 
@@ -36,7 +39,7 @@ const useUserStore = create<UserState>()(
         .catch((error) => {
           set(() => ({
             isLoadingUsers: false,
-            error: error.message,
+            tableError: error.message,
           }))
         })
     },
@@ -46,9 +49,14 @@ const useUserStore = create<UserState>()(
         users: updatedUsers,
       })),
 
-    setError: (updatedError: string) =>
+    setModalError: (updatedError: string) =>
       set(() => ({
-        error: updatedError,
+        modalError: updatedError,
+      })),
+
+    setTableError: (updatedError: string) =>
+      set(() => ({
+        tableError: updatedError,
       })),
 
     deleteUser: (login: string) => {
@@ -60,15 +68,22 @@ const useUserStore = create<UserState>()(
         .delete(`${ROUTES.users}/${login}`)
         .then((response) => {
           set(() => ({
-            error: '',
+            modalError: '',
             isLoadingUpdateUser: false,
           }))
+
+          notification.open({
+            type: 'success',
+            message: `${login} successfully deleted`,
+            duration: 3,
+            className: 'notification',
+          })
 
           return response
         })
         .catch((error) =>
           set(() => ({
-            error: error.message,
+            modalError: error.message,
             isLoadingUpdateUser: false,
           })),
         )
@@ -86,15 +101,22 @@ const useUserStore = create<UserState>()(
         })
         .then((response) => {
           set(() => ({
-            error: '',
+            modalError: '',
             isLoadingUpdateUser: false,
           }))
+
+          notification.open({
+            type: 'success',
+            message: `${updatedUser.login} edited successfully`,
+            duration: 3,
+            className: 'notification',
+          })
 
           return response
         })
         .catch((error) =>
           set(() => ({
-            error: error.message,
+            modalError: error.message,
             isLoadingUpdateUser: false,
           })),
         )
@@ -112,15 +134,22 @@ const useUserStore = create<UserState>()(
         })
         .then((response) => {
           set(() => ({
-            error: '',
+            modalError: '',
             isLoadingUpdateUser: false,
           }))
+
+          notification.open({
+            type: 'success',
+            message: `${newUser.login} created successfully`,
+            duration: 3,
+            className: 'notification',
+          })
 
           return response
         })
         .catch((error) =>
           set(() => ({
-            error: error.message,
+            modalError: error.message,
             isLoadingUpdateUser: false,
           })),
         )

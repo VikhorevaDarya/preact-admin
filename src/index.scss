@@ -32,3 +32,16 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.notification {
+  width: 345px !important;
+  padding: 1.6rem !important;
+
+  .ant-notification-notice-message {
+    margin-bottom: 0 !important;
+  }
+
+  .ant-notification-notice-close {
+    top: 17px !important;
+  }
+}

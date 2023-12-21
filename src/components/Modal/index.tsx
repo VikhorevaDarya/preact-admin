@@ -17,17 +17,18 @@ interface ModalProps {
 }
 
 function ModalWindow({ onClose, user, type }: ModalProps) {
-  const [error, deleteUser, getUsers, editUser, createUser, isLoadingUpdateUser] = useUserStore(
-    (state) => [
-      state.error,
-      state.deleteUser,
-      state.getUsers,
-      state.editUser,
-      state.createUser,
-      state.isLoadingUpdateUser,
-    ],
-    shallow,
-  )
+  const [modalError, deleteUser, getUsers, editUser, createUser, isLoadingUpdateUser] =
+    useUserStore(
+      (state) => [
+        state.modalError,
+        state.deleteUser,
+        state.getUsers,
+        state.editUser,
+        state.createUser,
+        state.isLoadingUpdateUser,
+      ],
+      shallow,
+    )
 
   const isEdit = type === 'edit'
   const buttonTitle = type?.charAt(0).toUpperCase() + type?.slice(1)
@@ -44,10 +45,11 @@ function ModalWindow({ onClose, user, type }: ModalProps) {
   const inputPasswordIconRender = (visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)
   const submitMethod = isEdit ? editUser : createUser
 
-  const handleSubmit = (values) =>
+  const handleSubmit = (values) => {
     submitMethod(values).then((res) => {
       if (res) finishSession()
     })
+  }
 
   const onDelete = () =>
     deleteUser(user.login).then((res) => {
@@ -119,7 +121,7 @@ function ModalWindow({ onClose, user, type }: ModalProps) {
         </div>
       )}
 
-      <span class='modal__form-error'>{error}</span>
+      <span class='modal__form-error'>{modalError}</span>
     </Modal>
   )
 }
