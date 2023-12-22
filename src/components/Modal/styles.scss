@@ -9,7 +9,9 @@
   }
 
   &__form-error {
+    display: block;
     color: clr.$red-100;
+    margin-top: 2rem;
   }
 
   &__delete-title {
