@@ -86,7 +86,7 @@ function ModalWindow({ onClose, user, type }: ModalProps) {
           )}
 
           <Form.Item name='rules'>
-            <TextArea placeholder='Deny access' />
+            <TextArea placeholder='Deny access' rows={20} />
           </Form.Item>
 
           <Button type='primary' htmlType='submit' disabled={isLoadingUpdateUser}>
