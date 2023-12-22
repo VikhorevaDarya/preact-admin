@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 
+import { NotificationPlacement } from 'antd/es/notification/interface'
 import { notification } from 'antd'
 
 import { UserType, NewUserType } from './types'
@@ -13,6 +14,7 @@ export const ROUTES = {
 
 const notificationOptions = {
   duration: 3,
+  placement: 'bottomRight' as NotificationPlacement,
   className: 'notification',
 }
 
@@ -80,7 +82,7 @@ const useUserStore = create<UserState>()(
           notification.open({
             ...notificationOptions,
             type: 'success',
-            message: `${login} successfully deleted`,
+            message: `${login} deleted successfully`,
           })
 
           return response
@@ -101,7 +103,8 @@ const useUserStore = create<UserState>()(
       return http()
         .put(ROUTES.users, {
           ...updatedUser,
-          rules: updatedUser.rules.split('\n'),
+          password: '',
+          rules: updatedUser.rules.trim().split('\n').filter(Boolean),
         })
         .then((response) => {
           set(() => ({
@@ -133,7 +136,7 @@ const useUserStore = create<UserState>()(
       return http()
         .post(ROUTES.users, {
           ...newUser,
-          rules: newUser.rules.trim().split('\n'),
+          rules: newUser.rules.trim().split('\n').filter(Boolean),
         })
         .then((response) => {
           set(() => ({

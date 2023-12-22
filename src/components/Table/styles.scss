@@ -11,15 +11,6 @@
     margin-top: 4rem;
   }
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-
-    width: 100%;
-
-    margin-bottom: 1rem;
-  }
-
   &__error {
     color: clr.$red-100;
     margin-top: 2rem;
@@ -27,14 +18,6 @@
 
   &__edit {
     width: 120px;
-  }
-
-  &__add-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 1.6rem;
   }
 
   &__tooltip-inner-item {

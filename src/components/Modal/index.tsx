@@ -73,12 +73,17 @@ function ModalWindow({ onClose, user, type }: ModalProps) {
           initialValues={initialValues}
         >
           <Form.Item name='login' rules={[{ required: true, message: 'Login is required' }]}>
-            <Input placeholder='login' />
+            <Input placeholder='login' disabled={isEdit} />
           </Form.Item>
 
-          <Form.Item name='password' rules={[{ required: true, message: 'Password is required' }]}>
-            <Input.Password placeholder='Password' iconRender={inputPasswordIconRender} />
-          </Form.Item>
+          {!isEdit && (
+            <Form.Item
+              name='password'
+              rules={[{ required: true, message: 'Password is required' }]}
+            >
+              <Input.Password placeholder='Password' iconRender={inputPasswordIconRender} />
+            </Form.Item>
+          )}
 
           <Form.Item name='rules'>
             <TextArea placeholder='Deny access' />

@@ -18,4 +18,21 @@
 
     margin-top: 2rem;
   }
+
+  &__add-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.6rem;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+
+    margin-bottom: 1rem;
+  }
 }

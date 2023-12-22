@@ -56,9 +56,13 @@ const AccountManagement = () => {
   return (
     <div class='account-management'>
       <h1 class='account-management__title'>Registry Account Management</h1>
-      <div class='table__header'>
+      <div class='account-management__header'>
         <Filter />
-        <Button className='table__add-button' type='primary' onClick={handleAddButtonClick}>
+        <Button
+          className='account-management__add-button'
+          type='primary'
+          onClick={handleAddButtonClick}
+        >
           Add User
         </Button>
       </div>

@@ -7,15 +7,17 @@ import { useUserStore } from '@/store'
 
 import './styles.scss'
 
+const defaultSelectValue = 'login'
+
+const options = [
+  { value: 'login', label: 'login' },
+  { value: 'access', label: 'access' },
+]
+
 function Filter() {
   const [setUsers, getUsers] = useUserStore((state) => [state.setUsers, state.getUsers], shallow)
   const [inputValue, setInputValue] = useState('')
-  const [selectValue, setSelectValue] = useState('login')
-
-  const options = [
-    { value: 'login', label: 'login' },
-    { value: 'access', label: 'access' },
-  ]
+  const [selectValue, setSelectValue] = useState(defaultSelectValue)
 
   const onInput = useCallback(
     (event: InputEvent) => {
