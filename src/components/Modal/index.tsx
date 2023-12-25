@@ -31,6 +31,7 @@ function ModalWindow({ onClose, user, type }: ModalProps) {
     )
 
   const isEdit = type === 'edit'
+  const isCreate = type === 'create'
   const buttonTitle = type?.charAt(0).toUpperCase() + type?.slice(1)
 
   const initialValues = {
@@ -65,7 +66,7 @@ function ModalWindow({ onClose, user, type }: ModalProps) {
 
   return (
     <Modal open={true} className='modal' onCancel={onClose}>
-      {(isEdit && user) || type === 'create' ? (
+      {(isEdit && user) || isCreate ? (
         <Form
           className='modal__form'
           onFinish={handleSubmit}

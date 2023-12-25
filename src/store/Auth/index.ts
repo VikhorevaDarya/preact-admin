@@ -12,7 +12,7 @@ export const ROUTES = {
 const useAuthStore = create<AuthState>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         token: null,
         error: null,
         isLoading: false,
@@ -42,7 +42,6 @@ const useAuthStore = create<AuthState>()(
             token: updatedToken,
           })),
       }),
-
       {
         name: 'auth',
         partialize: (state) => ({

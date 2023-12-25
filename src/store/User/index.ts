@@ -16,6 +16,10 @@ const notificationOptions = {
   duration: 3,
   placement: 'bottomRight' as NotificationPlacement,
   className: 'notification',
+  style: {
+    width: 345,
+    padding: 16,
+  },
 }
 
 const useUserStore = create<UserState>()(

@@ -20,7 +20,7 @@ export interface UserState {
   isLoadingUsers: boolean
   isLoadingUpdateUser: boolean
 
-  getUsers: () => Promise<void | AxiosResponse<UserType[], any>>
+  getUsers: () => Promise<UserType[]>
   deleteUser: (login: string) => Promise<void | AxiosResponse<any, any>>
   editUser: (updatedUser: NewUserType) => Promise<void | AxiosResponse<any, any>>
   createUser: (newUser: NewUserType) => Promise<void | AxiosResponse<any, any>>

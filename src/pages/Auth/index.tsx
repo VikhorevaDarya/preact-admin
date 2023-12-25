@@ -13,9 +13,7 @@ const AuthPage = () => {
   )
   const inputPasswordIconRender = (visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)
 
-  const handleSubmit = (values) => {
-    login(values.login, values.password)
-  }
+  const handleSubmit = (values) => login(values.login, values.password)
 
   return (
     <div class='auth'>

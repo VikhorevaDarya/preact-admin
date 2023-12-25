@@ -38,13 +38,12 @@ function Filter() {
     [selectValue],
   )
 
-  const filterByLogin = (value: string) => {
+  const filterByLogin = (value: string) =>
     getUsers().then((users) => {
       setUsers(users.filter((item) => item.login.startsWith(value)))
     })
-  }
 
-  const filterByAccess = (value: string) => {
+  const filterByAccess = (value: string) =>
     getUsers().then((users) => {
       setUsers(
         users.filter((item) =>
@@ -52,7 +51,6 @@ function Filter() {
         ),
       )
     })
-  }
 
   const onClear = () => {
     setInputValue('')
